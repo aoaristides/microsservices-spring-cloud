@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("cartoes")
 @RequiredArgsConstructor
-public class CartoessResource {
+public class CartoesResource {
 
     private final CartaoService cartaoService;
     private final ClienteCartaoService clienteCartaoService;
