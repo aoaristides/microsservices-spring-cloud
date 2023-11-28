@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: ms-cartoes
+  datasource:
+    driver-class-name: org.h2.Driver
+    username: root
+    password: root
+    url: jdbc:h2:mem:ms_cartoes_db;MODE=MYSQL;DATABASE_TO_LOWER=TRUE
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2
+
+server:
+  port: 0
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://makersweb.local:8761/eureka
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
