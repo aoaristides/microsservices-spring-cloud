@@ -1,8 +1,10 @@
 package br.com.makersweb.mscartoes.application.resources;
 
 import br.com.makersweb.mscartoes.application.dto.CartaoSaveRequest;
+import br.com.makersweb.mscartoes.application.dto.CartoesPorClienteResponse;
 import br.com.makersweb.mscartoes.domain.Cartao;
 import br.com.makersweb.mscartoes.services.CartaoService;
+import br.com.makersweb.mscartoes.services.ClienteCartaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.List;
 public class CartoessResource {
 
     private final CartaoService cartaoService;
+    private final ClienteCartaoService clienteCartaoService;
 
     @GetMapping
     public String status() {
@@ -35,6 +38,12 @@ public class CartoessResource {
     @GetMapping(params = "renda")
     public ResponseEntity<List<Cartao>> getCartoesRendaAte(@RequestParam("renda") Long renda) {
         return ResponseEntity.ok(cartaoService.getCartoesRendaMenorIgual(renda));
+    }
+
+    @GetMapping(params = "cpf")
+    public ResponseEntity<List<CartoesPorClienteResponse>> getCartoesPorCliente(@RequestParam("cpf") String cpf) {
+        final var lista = clienteCartaoService.listarCartoesPoCpf(cpf).stream().map(CartoesPorClienteResponse::from).toList();
+        return ResponseEntity.ok(lista);
     }
 
 }
