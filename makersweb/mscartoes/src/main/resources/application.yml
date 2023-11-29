@@ -12,6 +12,11 @@ spring:
       settings:
         web-allow-others: true
       path: /h2
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
 
 server:
   port: 0
@@ -22,3 +27,7 @@ eureka:
       defaultZone: http://makersweb.local:8761/eureka
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+mq:
+  queues:
+    emissao-cartoes: emissao-cartoes
