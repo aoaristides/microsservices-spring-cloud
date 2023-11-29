@@ -6,10 +6,9 @@ import lombok.Data;
  * @author aaristides
  */
 @Data
-public class DadosCliente {
+public class DadosAvaliacao {
 
-    private String id;
-    private String nome;
-    private Integer idade;
+    private String cpf;
+    private Long renda;
 
 }

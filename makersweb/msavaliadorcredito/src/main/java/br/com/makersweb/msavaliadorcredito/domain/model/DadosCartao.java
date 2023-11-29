@@ -2,14 +2,17 @@ package br.com.makersweb.msavaliadorcredito.domain.model;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author aaristides
  */
 @Data
-public class DadosCliente {
+public class DadosCartao {
 
     private String id;
     private String nome;
-    private Integer idade;
+    private String bandeira;
+    private BigDecimal limiteBasico;
 
 }
