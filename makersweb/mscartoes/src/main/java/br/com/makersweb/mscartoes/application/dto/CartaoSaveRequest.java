@@ -19,7 +19,7 @@ public record CartaoSaveRequest(
 ) {
 
     public Cartao toModel() {
-        return Cartao.with(nome(), bandeira(), renda(), limite());
+        return Cartao.newCartao(nome(), bandeira(), renda(), limite());
     }
 
 }

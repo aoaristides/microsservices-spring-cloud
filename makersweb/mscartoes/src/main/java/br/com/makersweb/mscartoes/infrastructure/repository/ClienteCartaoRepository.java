@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * @author aaristides
  */
-public interface ClienteCartaoRepository extends JpaRepository<ClienteCartao, UUID> {
+public interface ClienteCartaoRepository extends JpaRepository<ClienteCartao, String> {
 
     List<ClienteCartao> findByCpf(final String cpf);
 

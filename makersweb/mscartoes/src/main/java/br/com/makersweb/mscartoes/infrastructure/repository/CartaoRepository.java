@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * @author aaristides
  */
-public interface CartaoRepository extends JpaRepository<Cartao, UUID> {
+public interface CartaoRepository extends JpaRepository<Cartao, String> {
 
     List<Cartao> findByRendaLessThanEqual(BigDecimal renda);
 

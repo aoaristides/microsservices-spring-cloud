@@ -1,6 +1,5 @@
 package br.com.makersweb.msavaliadorcredito.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,10 +8,12 @@ import java.math.BigDecimal;
  * @author aaristides
  */
 @Data
-public class CartaoAprovado {
+public class DadosSolicitacaoEmissaoCartao {
 
     private String cartao;
-    private String bandeira;
-    private BigDecimal limite;
+    private String cpf;
+    private String endereco;
+    private BigDecimal limiteLiberado;
+    private String protocolo;
 
 }

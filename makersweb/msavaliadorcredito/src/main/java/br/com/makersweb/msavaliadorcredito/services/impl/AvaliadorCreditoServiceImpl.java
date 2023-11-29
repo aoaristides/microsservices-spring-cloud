@@ -2,9 +2,11 @@ package br.com.makersweb.msavaliadorcredito.services.impl;
 
 import br.com.makersweb.msavaliadorcredito.application.exceptions.DadosClienteNotFoundException;
 import br.com.makersweb.msavaliadorcredito.application.exceptions.ErroComunicacaoMicroservicoException;
+import br.com.makersweb.msavaliadorcredito.application.exceptions.ErroSolicitacaoCartaoException;
 import br.com.makersweb.msavaliadorcredito.domain.model.*;
 import br.com.makersweb.msavaliadorcredito.infrastructure.clients.CartaoResourceClient;
 import br.com.makersweb.msavaliadorcredito.infrastructure.clients.ClienteResourceClient;
+import br.com.makersweb.msavaliadorcredito.infrastructure.listner.publisher.SolicitacaoEmissaoCartaoPublisher;
 import br.com.makersweb.msavaliadorcredito.services.AvaliadorCreditoService;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -25,6 +28,7 @@ public class AvaliadorCreditoServiceImpl implements AvaliadorCreditoService {
 
     private final ClienteResourceClient clienteResource;
     private final CartaoResourceClient cartaoResource;
+    private final SolicitacaoEmissaoCartaoPublisher emissaoCartaoPublisher;
 
     @Override
     public SituacaoCliente obterSituacaoCliente(final String cpf) throws DadosClienteNotFoundException, ErroComunicacaoMicroservicoException {
@@ -64,7 +68,7 @@ public class AvaliadorCreditoServiceImpl implements AvaliadorCreditoService {
                 CartaoAprovado aprovado = new CartaoAprovado();
                 aprovado.setCartao(cartao.getNome());
                 aprovado.setBandeira(cartao.getBandeira());
-                aprovado.setLimiteAprovado(limiteAprovado);
+                aprovado.setLimite(limiteAprovado);
                 return aprovado;
             }).collect(Collectors.toList());
 
@@ -76,6 +80,17 @@ public class AvaliadorCreditoServiceImpl implements AvaliadorCreditoService {
             }
 
             throw new ErroComunicacaoMicroservicoException(e.getMessage(), status);
+        }
+    }
+
+    public ProtocoloSolicitacaoCartao solicitarEmissaoCartao(DadosSolicitacaoEmissaoCartao dados) {
+        try {
+            final var protocolo = UUID.randomUUID().toString();
+            dados.setProtocolo(protocolo.toString());
+            emissaoCartaoPublisher.solicitarCartao(dados);
+            return new ProtocoloSolicitacaoCartao(protocolo);
+        } catch (Exception e) {
+            throw new ErroSolicitacaoCartaoException(e.getMessage());
         }
     }
 }

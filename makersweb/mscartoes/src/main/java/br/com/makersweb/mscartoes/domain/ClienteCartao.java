@@ -17,8 +17,7 @@ import java.util.UUID;
 public class ClienteCartao {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String id;
 
     private String cpf;
 
@@ -27,5 +26,6 @@ public class ClienteCartao {
     private Cartao cartao;
 
     private BigDecimal limite;
+    private String protocolo;
 
 }

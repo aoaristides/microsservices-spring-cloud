@@ -2,7 +2,10 @@ package br.com.makersweb.msavaliadorcredito.application.controllers;
 
 import br.com.makersweb.msavaliadorcredito.application.exceptions.DadosClienteNotFoundException;
 import br.com.makersweb.msavaliadorcredito.application.exceptions.ErroComunicacaoMicroservicoException;
+import br.com.makersweb.msavaliadorcredito.application.exceptions.ErroSolicitacaoCartaoException;
 import br.com.makersweb.msavaliadorcredito.domain.model.DadosAvaliacao;
+import br.com.makersweb.msavaliadorcredito.domain.model.DadosSolicitacaoEmissaoCartao;
+import br.com.makersweb.msavaliadorcredito.domain.model.ProtocoloSolicitacaoCartao;
 import br.com.makersweb.msavaliadorcredito.domain.model.SituacaoCliente;
 import br.com.makersweb.msavaliadorcredito.services.AvaliadorCreditoService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +40,7 @@ public class AvaliadorCreditoController {
         }
     }
 
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<?> realizarAvaliacao(@RequestBody DadosAvaliacao dados) {
         try {
             return ResponseEntity.ok(avaliadorCreditoService.realizarAvaliacao(dados.getCpf(), dados.getRenda()));
@@ -46,6 +49,15 @@ public class AvaliadorCreditoController {
         } catch (ErroComunicacaoMicroservicoException e) {
             var status = HttpStatus.resolve(e.getStatus()) != null ? HttpStatus.resolve(e.getStatus()) : HttpStatus.INTERNAL_SERVER_ERROR;
             return ResponseEntity.status(status).body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "solicitacoes-cartao")
+    public ResponseEntity<?> solicitarCartao(@RequestBody DadosSolicitacaoEmissaoCartao dados) {
+        try {
+            return ResponseEntity.ok(avaliadorCreditoService.solicitarEmissaoCartao(dados));
+        } catch (ErroSolicitacaoCartaoException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
